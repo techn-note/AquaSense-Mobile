@@ -56,13 +56,13 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.sectionTitle}>Condições Gerais</Text>
         <View style={styles.card}>
           <View style={styles.dataContainer}>
-            <Text style={styles.label}>Oxigenação</Text>
-            <Text style={styles.value}>4.3 mg/L</Text>
+            <Text style={styles.label}>Temp</Text>
+            <Text style={styles.value}>18ºC</Text>
           </View>
           <View style={styles.separator} />
           <View style={styles.dataContainer}>
-            <Text style={styles.label}>Volume</Text>
-            <Text style={styles.value}>153 Litros</Text>
+            <Text style={styles.label}>Ph</Text>
+            <Text style={styles.value}>7.2</Text>
           </View>
         </View>
       </View>
