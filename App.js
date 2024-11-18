@@ -1,20 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useCallback } from "react";
+import { View, ActivityIndicator } from "react-native";
+import { globalStyles } from "./src/styles/globalStyles";
+import MainNavigator from "./src/navigation/MainNavigator";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Montserrat_Bold: require("./src/assets/fonts/Montserrat-Bold.ttf"),
+    Montserrat_SemiBold: require("./src/assets/fonts/Montserrat-SemiBold.ttf"),
+    Montserrat_Medium: require("./src/assets/fonts/Montserrat-Medium.ttf"),
+    Montserrat_Regular: require("./src/assets/fonts/Montserrat-Regular.ttf"),
+  });
+
+  SplashScreen.preventAutoHideAsync().catch(() =>
+    console.warn("Erro ao prevenir auto-hide da SplashScreen")
+  );
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      try {
+        await SplashScreen.hideAsync();
+      } catch (e) {
+        console.warn("Erro ao ocultar a SplashScreen:", e);
+      }
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={globalStyles.container} onLayout={onLayoutRootView}>
+      <MainNavigator />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
