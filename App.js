@@ -4,6 +4,7 @@ import { globalStyles } from "./src/styles/globalStyles";
 import MainNavigator from "./src/navigation/MainNavigator";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { AuthProvider } from "./src/context/AuthProvider.js";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -33,7 +34,9 @@ export default function App() {
 
   return (
     <View style={globalStyles.container} onLayout={onLayoutRootView}>
-      <MainNavigator />
+      <AuthProvider>
+        <MainNavigator />
+      </AuthProvider>
     </View>
   );
 }

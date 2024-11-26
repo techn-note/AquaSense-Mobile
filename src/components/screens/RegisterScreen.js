@@ -1,23 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
+  Alert,
 } from "react-native";
+import { register } from "../../services/api";
 
 export default function SignInScreen({ navigation }) {
-  const handleSignIn = () => {
-    // Lógica futura para autenticação via API
-    // Exemplo: const response = await signInService(email, password);
-    navigation.navigate("HomeScreen"); // Redireciona para a HomeScreen
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
+  const [country, setCountry] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleRegister = async () => {
+    try {
+      const userData = { name, email, age, country, password };
+      const response = await register(userData);
+
+      Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+      
+      navigation.navigate("LoginScreen");
+    } catch (error) {
+      console.error("Erro ao cadastrar:", error.message);
+      setError(error?.response?.data?.message || "Erro ao cadastrar usuário.");
+      Alert.alert("Erro", error?.response?.data?.message || "Erro ao cadastrar usuário.");
+    }
   };
 
   return (
     <View style={styles.container}>
-      {/* Logo */}
       <Text style={styles.title}>SIGN-IN</Text>
 
       {/* Campos de entrada */}
@@ -25,41 +41,43 @@ export default function SignInScreen({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Digite seu nome"
-        placeholderTextColor="#999"
+        value={name}
+        onChangeText={setName}
       />
       <Text style={styles.label}>E-mail</Text>
       <TextInput
         style={styles.input}
         placeholder="Digite seu e-mail"
-        placeholderTextColor="#999"
+        value={email}
+        onChangeText={setEmail}
         keyboardType="email-address"
       />
       <Text style={styles.label}>Estado</Text>
       <TextInput
         style={styles.input}
         placeholder="Digite seu estado"
-        placeholderTextColor="#999"
+        value={country}
+        onChangeText={setCountry}
       />
       <Text style={styles.label}>Idade</Text>
       <TextInput
         style={styles.input}
         placeholder="Digite sua idade"
-        placeholderTextColor="#999"
+        value={age}
+        onChangeText={setAge}
         keyboardType="numeric"
-      />
-      <Text style={styles.label}>Cidade</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Digite sua cidade"
-        placeholderTextColor="#999"
       />
       <Text style={styles.label}>Senha</Text>
       <TextInput
         style={styles.input}
         placeholder="Digite sua senha"
-        placeholderTextColor="#999"
+        value={password}
+        onChangeText={setPassword}
         secureTextEntry
       />
+
+      {/* Exibe a mensagem de erro se houver */}
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       {/* Botões */}
       <View style={styles.buttonsContainer}>
@@ -67,7 +85,7 @@ export default function SignInScreen({ navigation }) {
           <Text style={styles.link}>Logar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
@@ -128,5 +146,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontFamily: "Montserrat_Bold",
+  },
+  errorText: {
+    color: "red",
+    fontFamily: "Montserrat_Medium",
+    fontSize: 14,
+    marginTop: 10,
   },
 });

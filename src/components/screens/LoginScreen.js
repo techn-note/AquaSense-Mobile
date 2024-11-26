@@ -1,27 +1,34 @@
-import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from "react-native";
+import React, { useState, useContext } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from "react-native";
+import { login } from "../../services/api";
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function LoginScreen({ navigation }) {
-  const handleLogin = () => {
-    // Lógica futura para autenticação via API
-    // Exemplo: const response = await loginService(email, password);
-    navigation.navigate("HomeScreen"); // Redireciona para a HomeScreen
+  const { saveToken } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const response = await login(email, password);
+
+      if (response?.data?.access_token) {
+        const token = response.data.access_token;
+        saveToken(token);
+        Alert.alert("Sucesso", "Login realizado com sucesso");
+        navigation.navigate("HomeScreen");
+      } else {
+        throw new Error("Token não recebido");
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Credenciais inválidas ou problema de rede.");
+      console.error("Erro ao fazer login:", error.message);
+    }
   };
 
   return (
     <View style={styles.container}>
-      {/* Logo */}
-      <Image
-        source={require("../../assets/images/icon.png")}
-        style={styles.logo}
-      />
+      <Image source={require("../../assets/images/icon.png")} style={styles.logo} />
       <Text style={styles.title}>LOG-IN</Text>
 
       {/* Campos de entrada */}
@@ -29,14 +36,15 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Digite seu e-mail"
-        placeholderTextColor="#999"
-        keyboardType="email-address"
+        value={email}
+        onChangeText={setEmail}
       />
       <Text style={styles.label}>Senha</Text>
       <TextInput
         style={styles.input}
         placeholder="Digite sua senha"
-        placeholderTextColor="#999"
+        value={password}
+        onChangeText={setPassword}
         secureTextEntry
       />
 
@@ -53,6 +61,7 @@ export default function LoginScreen({ navigation }) {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -90,22 +99,8 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_Regular",
     marginBottom: 20,
   },
-  buttons: {
-    flexDirection: "row",
-    gap: 85,
-    marginTop: 20,
-  },
-  linkButton: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  link: {
-    color: "#007BFF",
-    fontFamily: "Montserrat_Medium",
-    fontSize: 16,
-  },
   buttonsContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 75
   },
   button: {
@@ -120,5 +115,16 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontFamily: "Montserrat_Bold",
+  },
+  errorText: {
+    color: "red",
+    fontFamily: "Montserrat_Medium",
+    fontSize: 14,
+    marginTop: 10,
+  },
+  link: {
+    color: "#007BFF",
+    fontFamily: "Montserrat_Medium",
+    fontSize: 16,
   },
 });
