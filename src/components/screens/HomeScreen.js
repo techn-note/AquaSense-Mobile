@@ -84,6 +84,50 @@ export default function HomeScreen({ navigation }) {
           </View>
         </View>
       </View>
+
+      {/* Cartões Informativos */}
+      <View style={styles.infoContainer}>
+        <Text style={styles.sectionTitle}>Água</Text>
+        <View style={styles.card}>
+          <View style={styles.dataContainer}>
+            <Text style={styles.label}>Oxigenação</Text>
+            <Text style={styles.value}>4.3 mg/L</Text>
+          </View>
+          <View style={styles.separator} />
+          <View style={styles.dataContainer}>
+            <Text style={styles.label}>Volume</Text>
+            <Text style={styles.value}>153 Litros</Text>
+          </View>
+        </View>
+
+        <Text style={styles.sectionTitle}>Condições Gerais</Text>
+        <View style={styles.card}>
+          <View style={styles.dataContainer}>
+            <Text style={styles.label}>Temp</Text>
+            <Text style={styles.value}>18ºC</Text>
+          </View>
+          <View style={styles.separator} />
+          <View style={styles.dataContainer}>
+            <Text style={styles.label}>Ph</Text>
+            <Text style={styles.value}>7.2</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Barra de Navegação */}
+      <View style={styles.toolBar}>
+        <TouchableOpacity style={styles.iconButton}>
+          <MaterialIcons name="description" size={24} color="#6C6C6C" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.iconButton, styles.centerButton]}>
+          <MaterialIcons name="home" size={24} color="#FFFFFF" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.iconButton}>
+          <MaterialIcons name="tune" size={24} color="#6C6C6C" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
