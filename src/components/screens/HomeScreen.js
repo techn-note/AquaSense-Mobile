@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,19 +9,139 @@ import {
 } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import { getUserName, getLatestSensorData, createAtualizacao, getLatestAtualizacao } from "../../services/api";
+import { getToken } from "../../utils/Auth";
+
+const PARAMETROS_LIMITE = {
+  "Temperatura": { min: 18.0, max: 24.0 },
+  "Ph": { min: 6.8, max: 7.2 },
+  "Volume": { min: 45.0, max: 55.0 },
+  "Oxigenacao": { min: 5.0, max: 8.0 }
+};
 
 export default function HomeScreen({ navigation }) {
+  const [userName, setUserName] = useState("Usuário");
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [selectedTank, setSelectedTank] = useState("Tanque 1");
 
-  const tanks = ["Tanque 1", "Tanque 2", "Tanque 3"];
+  const [sensorData, setSensorData] = useState({
+    temperatura: null,
+    ph: null,
+    oxigenacao: null,
+    volume: null,
+  });
+
+  const [latestUpdate, setLatestUpdate] = useState(null);
+
+  const tanks = ["Tanque 1", "Tanque 2"];
 
   const handleSelectTank = (tank) => {
     setSelectedTank(tank);
     setDropdownVisible(false);
-    // Aqui você pode enviar o `tank` para a API
-    console.log("Tanque selecionado:", tank);
   };
+
+  const fetchUserName = async () => {
+    try {
+      const token = await getToken();
+      if (token) {
+        const name = await getUserName(token);
+        setUserName(name);
+      } else {
+        setUserName("Usuário não autenticado");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar nome do usuário:", error);
+      setUserName("Usuário");
+    }
+  };
+
+  const fetchSensorData = async () => {
+    try {
+      const sensorTypes = ["Temperatura", "Ph", "Oxigenacao", "Volume"];
+      const tank = selectedTank;
+
+      const fetchedData = {};
+
+      for (const type of sensorTypes) {
+        const response = await getLatestSensorData(type, tank);
+        if (response?.data) {
+          fetchedData[type.toLowerCase()] = response.data;
+        }
+      }
+
+      setSensorData(fetchedData);
+    } catch (error) {
+      console.error("Erro ao buscar dados do sensor:", error);
+    }
+  };
+
+  const fetchLatestUpdate = async () => {
+    try {
+      const response = await getLatestAtualizacao(selectedTank);
+      if (response?.data) {
+        setLatestUpdate(response.data.mensagem || "Última atualização não encontrada.");
+      }
+    } catch (error) {
+      setLatestUpdate("Erro ao buscar última atualização.");
+    }
+  };
+
+  const createUpdate = async () => {
+    try {
+      await createAtualizacao(selectedTank);
+      console.log(`Atualização criada para o ${selectedTank}`);
+    } catch (error) {
+      console.error("Erro ao criar atualização:", error);
+    }
+  };
+
+const calculateProgress = (parametro, valor) => {
+  const limite = PARAMETROS_LIMITE[parametro];
+
+  if (valor === null || valor === undefined) {
+    return 0;
+  }
+
+
+  if (valor < limite.min) {
+    return 10;
+  } else if (valor > limite.max) {
+    return 100;
+  } else {
+
+    const progress = ((valor - limite.min) / (limite.max - limite.min)) * 100;
+
+    const optimisticProgress = progress + 50;
+    return optimisticProgress > 100 ? 100 : optimisticProgress;
+  }
+};
+
+
+const calculateOverallProgress = () => {
+  const { temperatura, ph, oxigenacao, volume } = sensorData;
+
+
+  const tempProgress = calculateProgress("Temperatura", temperatura?.valor);
+  const phProgress = calculateProgress("Ph", ph?.valor);
+  const oxProgress = calculateProgress("Oxigenacao", oxigenacao?.valor);
+  const volProgress = calculateProgress("Volume", volume?.valor);
+
+
+  const overallProgress = (tempProgress + phProgress + oxProgress + volProgress) / 4;
+
+  return overallProgress;
+};
+
+  useEffect(() => {
+    fetchUserName();
+    createUpdate();
+  }, []);
+
+  useEffect(() => {
+    fetchSensorData();
+    fetchLatestUpdate();
+    createUpdate();
+  }, [selectedTank]);
 
   return (
     <View style={styles.container}>
@@ -36,7 +156,7 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         <View style={styles.avatar}>
-          <Text style={styles.greeting}>Olá, Rodrigo!</Text>
+          <Text style={styles.greeting}>Olá, {userName}!</Text>
 
           {/* Botão de Dropdown */}
           <TouchableOpacity
@@ -72,17 +192,22 @@ export default function HomeScreen({ navigation }) {
 
         {/* Status Principal */}
         <View style={styles.statusContainer}>
-          <MaterialIcons name="thumb-up" size={60} color="white" />
-          <Text style={styles.statusText}>Tudo certo por Aqui!</Text>
+          {latestUpdate === "Tudo certo por aqui!" ? (
+            <MaterialIcons name="thumb-up" size={60} color="white" />
+          ) : (
+            <MaterialIcons name="cancel" size={60} color="white" />
+          )}
+          <Text style={styles.statusText}>{latestUpdate}</Text>
           <View style={styles.ProgressBarContainer}>
             <ProgressBar
-              progress={0.98}
-              color="#00DF3A"
+              progress={calculateOverallProgress() / 100}
+              color={calculateOverallProgress() >= 80 ? "#00DF3A" : "#FF5733"}
               style={styles.progressBar}
             />
-            <Text style={styles.progressText}>98%</Text>
+            <Text style={styles.progressText}>{`${Math.round(calculateOverallProgress())}%`}</Text>
           </View>
         </View>
+
       </View>
 
       {/* Cartões Informativos */}
@@ -91,12 +216,16 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.card}>
           <View style={styles.dataContainer}>
             <Text style={styles.label}>Oxigenação</Text>
-            <Text style={styles.value}>4.3 mg/L</Text>
+            <Text style={styles.value}>
+              {sensorData.oxigenacao ? `${sensorData.oxigenacao.valor} mg/L` : "Carregando..."}
+            </Text>
           </View>
           <View style={styles.separator} />
           <View style={styles.dataContainer}>
             <Text style={styles.label}>Volume</Text>
-            <Text style={styles.value}>153 Litros</Text>
+            <Text style={styles.value}>
+              {sensorData.volume ? `${sensorData.volume.valor} Litros` : "Carregando..."}
+            </Text>
           </View>
         </View>
 
@@ -104,12 +233,16 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.card}>
           <View style={styles.dataContainer}>
             <Text style={styles.label}>Temp</Text>
-            <Text style={styles.value}>18ºC</Text>
+            <Text style={styles.value}>
+              {sensorData.temperatura ? `${sensorData.temperatura.valor}ºC` : "Carregando..."}
+            </Text>
           </View>
           <View style={styles.separator} />
           <View style={styles.dataContainer}>
             <Text style={styles.label}>Ph</Text>
-            <Text style={styles.value}>7.2</Text>
+            <Text style={styles.value}>
+              {sensorData.ph ? `${sensorData.ph.valor}` : "Carregando..."}
+            </Text>
           </View>
         </View>
       </View>
