@@ -8,8 +8,6 @@ const Dropdown = () => {
   const [items, setItems] = useState([
     { label: 'Tanque 1', value: 'tanque1' },
     { label: 'Tanque 2', value: 'tanque2' },
-    { label: 'Tanque 3', value: 'tanque3' },
-    { label: 'Tanque 4', value: 'tanque4' },
   ]);
 
   const handleValueChange = (value) => {

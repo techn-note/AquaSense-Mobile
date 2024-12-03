@@ -24,7 +24,7 @@ const PARAMETROS_LIMITE = {
   Temperatura: { min: 18.0, max: 24.0 },
   Ph: { min: 6.8, max: 7.2 },
   Volume: { min: 45.0, max: 55.0 },
-  Oxigenacao: { min: 5.0, max: 8.0 },
+  Tds: { min: 150, max: 300 },
 };
 
 export default function HomeScreen({ navigation }) {
@@ -37,7 +37,7 @@ export default function HomeScreen({ navigation }) {
   const [sensorData, setSensorData] = useState({
     temperatura: null,
     ph: null,
-    oxigenacao: null,
+    tds: null,
     volume: null,
   });
 
@@ -60,7 +60,7 @@ export default function HomeScreen({ navigation }) {
 
   const fetchSensorData = async () => {
     try {
-      const sensorTypes = ["Temperatura", "Ph", "Oxigenacao", "Volume"];
+      const sensorTypes = ["Temperatura", "Ph", "Tds", "Volume"];
       const tank = selectedTank;
 
       const fetchedData = {};
@@ -120,11 +120,11 @@ export default function HomeScreen({ navigation }) {
   };
 
   const calculateOverallProgress = () => {
-    const { temperatura, ph, oxigenacao, volume } = sensorData;
+    const { temperatura, ph, Tds, volume } = sensorData;
 
     const tempProgress = calculateProgress("Temperatura", temperatura?.valor);
     const phProgress = calculateProgress("Ph", ph?.valor);
-    const oxProgress = calculateProgress("Oxigenacao", oxigenacao?.valor);
+    const oxProgress = calculateProgress("Tds", Tds?.valor);
     const volProgress = calculateProgress("Volume", volume?.valor);
 
     const overallProgress =
@@ -180,10 +180,10 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.sectionTitle}>Água</Text>
         <View style={styles.card}>
           <View style={styles.dataContainer}>
-            <Text style={styles.label}>Oxigenação</Text>
+            <Text style={styles.label}>Tds</Text>
             <Text style={styles.value}>
-              {sensorData.oxigenacao
-                ? `${sensorData.oxigenacao.valor} mg/L`
+              {sensorData.tds
+                ? `${sensorData.tds.valor} PPM`
                 : "Carregando..."}
             </Text>
           </View>
