@@ -102,4 +102,18 @@ export const createTank = async (tankData) => {
   }
 };
 
+
+export const getLast10SensorData = async (tipo, tanque) => {
+  try {
+    const response = await api.get('/sensores/latest/10', {
+      params: { tipo, tanque },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar os últimos 10 dados do sensor:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
 export default api;
