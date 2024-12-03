@@ -116,4 +116,48 @@ export const getLast10SensorData = async (tipo, tanque) => {
 };
 
 
+export const updateTank = async (tankId, updateData) => {
+  try {
+    const response = await api.put(`/tanks/${tankId}`, updateData);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar tanque:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+export const updatePeixe = async (peixeId, updateData) => {
+  try {
+    const response = await api.put(`/peixes/${peixeId}`, updateData);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar peixe:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+export const getTankByName = async (name) => {
+  try {
+    const response = await api.get(`/tanks/name/${name}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar tanque pelo nome:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+export const getPeixeByName = async (name) => {
+  try {
+    const response = await api.get(`/peixes/name/${name}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar peixe pelo nome:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
 export default api;
