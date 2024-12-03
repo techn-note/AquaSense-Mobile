@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+
 const api = axios.create({
   baseURL: "http://127.0.0.1:5000",
   timeout: 5000,
 });
+
 
 export const getLatestAtualizacao = async (tanque) => {
   try {
@@ -16,6 +18,7 @@ export const getLatestAtualizacao = async (tanque) => {
     throw error;
   }
 };
+
 
 export const createAtualizacao = async (tanque) => {
   try {
@@ -73,6 +76,28 @@ export const getUserName = async (token) => {
     return response.data.data.name;
   } catch (error) {
     console.error("Erro ao buscar perfil:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+export const createPeixe = async (peixeData) => {
+  try {
+    const response = await api.post("/peixes", peixeData);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao criar peixe:", error.response?.data || error.message);
+    throw error
+  }
+};
+
+
+export const createTank = async (tankData) => {
+  try {
+    const response = await api.post('/tanks', tankData);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao criar tanque:", error.response?.data || error.message);
     throw error;
   }
 };
