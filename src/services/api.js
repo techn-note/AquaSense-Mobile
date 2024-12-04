@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:5000",
+  baseURL: "http://10.0.2.2:5000",
   timeout: 15000,
 });
 
@@ -15,7 +15,6 @@ export async function getTanques() {
     throw error;
   }
 }
-
 
 export async function getPeixes() {
   try {
@@ -136,7 +135,7 @@ export const getLast10SensorData = async (tipo, tanque) => {
     const response = await api.get('/sensores/latest/10', {
       params: { tipo, tanque },
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error('Erro ao buscar os últimos 10 dados do sensor:', error.response?.data || error.message);
     throw error;
@@ -172,7 +171,7 @@ export const updatePeixe = async (peixeId, updateData) => {
 export const getTankByName = async (name) => {
   try {
     const response = await api.get(`/tanks/name/${name}`);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error("Erro ao buscar tanque pelo nome:", error.response?.data || error.message);
     throw error;

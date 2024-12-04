@@ -51,7 +51,7 @@ const UpdateFishScreen = ({ navigation }) => {
   
 
   // Carregar dados do peixe selecionado
-//   Pesquisar por ID
+  //   Pesquisar por ID
 
   const handleFishSelection = async (name) => {
     try {

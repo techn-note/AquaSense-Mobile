@@ -86,7 +86,7 @@ export default function HomeScreen({ navigation }) {
       const sensorTypes = ["Temperatura", "Ph", "Tds", "Volume"];
       const fetchedData = {};
 
-      const tank = selectedTank.toLowerCase()
+      const tank = selectedTank
 
       for (const type of sensorTypes) {
         const response = await getLatestSensorData(type, tank);
@@ -121,10 +121,6 @@ export default function HomeScreen({ navigation }) {
     } catch (error) {
       console.error("Erro ao criar atualização:", error);
     }
-  };
-
-  const handleTankChange = (newValue) => {
-    setSelectedTank(newValue);
   };
 
   useEffect(() => {

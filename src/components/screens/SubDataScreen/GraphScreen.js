@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { getTanques } from "../../../services/api";
+import { getTanques, getLast10SensorData } from "../../../services/api";
 import Header from "../../common/Header";
 import Toolbar from "../../common/Toolbar";
 
@@ -30,7 +30,7 @@ const GraphScreen = () => {
     const fetchTanques = async () => {
       try {
         const response = await getTanques();
-        setTanques(response.data);
+        setTanques(response);
       } catch (error) {
         Alert.alert("Erro", "Erro ao carregar a lista de tanques.");
       }
@@ -39,7 +39,33 @@ const GraphScreen = () => {
     fetchTanques();
   }, []);
 
-  const fetchSensorData = (tankName) => {
+  const fetchSensorData = async (tankName) => {
+    try {
+      const sensorTypes = ["Temperatura", "Ph", "Tds", "Volume"];
+      const fetchedData = {};
+  
+      for (const type of sensorTypes) {
+        // Substitua por sua função de API que retorna os últimos 10 dados
+        const response = await getLast10SensorData(type, tankName);
+  
+        if (response && response.data) {
+          // Formata os dados para incluir apenas o array de "data"
+          fetchedData[type.toLowerCase()] = response.data.map(item => ({
+            data: item.data,
+            tanque: item.tanque,
+            tipo: item.tipo,
+            valor: item.valor,
+          }));
+        }
+      }
+  
+      // Define os dados formatados no estado ou onde necessário
+      setSensorData(fetchedData);
+    } catch (error) {
+      console.error("Erro ao buscar dados do sensor:", error);
+    }
+  };
+
     // Simulação de dados (a lógica original já deve buscar da API)
     const mockData = {
       temperature: [24, 26, 25, 27, 28],
@@ -49,9 +75,8 @@ const GraphScreen = () => {
       timestamps: ["10h", "11h", "12h", "13h", "14h"],
     };
 
-    setSensorData(mockData);
-    setSelectedTank(tankName);
-  };
+    setSelectedTank(tanques);
+    setSensorData(fetchSensorData(tanques));
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

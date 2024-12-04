@@ -34,25 +34,27 @@ const UpdateTankScreen = ({ navigation }) => {
       try {
         setLoading(true);
         const response = await getTanques();
-        setTanques(response.data);
+        const data = Array.isArray(response) ? response : [];
+        setTanques(data);
       } catch (error) {
         Alert.alert("Erro", "Erro ao carregar a lista de tanques.");
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchTanques();
   }, []);
+  
 
   // Carregar dados do tanque selecionado
   const handleTankSelection = async (name) => {
     try {
       const tankData = await getTankByName(name);
       setSelectedTank(tankData);
-      setName(tankData.data.name);
-      setCapacity(String(tankData.data.capacity));
-      setNumber(String(tankData.data.number));
+      setName(tankData.name);
+      setCapacity(String(tankData.capacity));
+      setNumber(String(tankData.number));
     } catch (error) {
       Alert.alert("Erro", "Erro ao buscar informações do tanque.");
     }
