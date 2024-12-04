@@ -26,6 +26,7 @@ const GraphScreen = () => {
 
   const screenWidth = Dimensions.get("window").width;
 
+
   useEffect(() => {
     const fetchTanques = async () => {
       try {
@@ -39,44 +40,41 @@ const GraphScreen = () => {
     fetchTanques();
   }, []);
 
+
   const fetchSensorData = async (tankName) => {
     try {
       const sensorTypes = ["Temperatura", "Ph", "Tds", "Volume"];
-      const fetchedData = {};
+      const fetchedData = {
+        temperatura: [],
+        ph: [],
+        tds: [],
+        volume: [],
+        timestamps: [],
+      };
   
       for (const type of sensorTypes) {
-        // Substitua por sua função de API que retorna os últimos 10 dados
         const response = await getLast10SensorData(type, tankName);
   
-        if (response && response.data) {
-          // Formata os dados para incluir apenas o array de "data"
-          fetchedData[type.toLowerCase()] = response.data.map(item => ({
-            data: item.data,
-            tanque: item.tanque,
-            tipo: item.tipo,
-            valor: item.valor,
-          }));
+        // Log para verificar a resposta da API
+        console.log(`Resposta da API para ${type}:`, response);
+  
+
+        if (response && response.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
+
+          fetchedData[type.toLowerCase()] = response.data.data.map(item => item.valor);
+          fetchedData.timestamps = response.data.data.map(item => new Date(item.data).toLocaleString());
+        } else {
+          // Adiciona uma mensagem de aviso somente se não houver dados
+          console.warn(`Nenhum dado encontrado para o sensor: ${type} no tanque ${tankName}`);
         }
       }
   
-      // Define os dados formatados no estado ou onde necessário
       setSensorData(fetchedData);
     } catch (error) {
       console.error("Erro ao buscar dados do sensor:", error);
     }
   };
-
-    // Simulação de dados (a lógica original já deve buscar da API)
-    const mockData = {
-      temperature: [24, 26, 25, 27, 28],
-      ph: [6.8, 7.1, 6.9, 7.0, 7.2],
-      tds: [300, 320, 310, 330, 350],
-      volume: [900, 850, 920, 870, 910],
-      timestamps: ["10h", "11h", "12h", "13h", "14h"],
-    };
-
-    setSelectedTank(tanques);
-    setSensorData(fetchSensorData(tanques));
+ 
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -89,7 +87,10 @@ const GraphScreen = () => {
             <CustomButton
               key={tank.name}
               title={tank.name}
-              onPress={() => fetchSensorData(tank.name)}
+              onPress={() => {
+                setSelectedTank(tank.name);
+                fetchSensorData(tank.name);
+              }}
             />
           ))}
         </View>
@@ -105,7 +106,7 @@ const GraphScreen = () => {
                 <LineChart
                   data={{
                     labels: sensorData.timestamps,
-                    datasets: [{ data: sensorData.temperature }],
+                    datasets: [{ data: sensorData.temperatura }],
                   }}
                   width={screenWidth - 50}
                   height={200}
@@ -164,8 +165,8 @@ const GraphScreen = () => {
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => {
-              setSelectedTank(null);
-              setSensorData(null);
+              setSelectedTank(null); // Volta para a seleção de tanques
+              setSensorData(null); // Limpa os dados
             }}
           >
             <Text style={styles.backButtonText}>Voltar</Text>

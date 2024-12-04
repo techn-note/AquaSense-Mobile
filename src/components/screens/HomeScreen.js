@@ -61,9 +61,6 @@ export default function HomeScreen({ navigation }) {
       console.error("Erro ao buscar tanques:", error);
     }
   };
-  
-
-  
 
   const fetchUserName = async () => {
     try {

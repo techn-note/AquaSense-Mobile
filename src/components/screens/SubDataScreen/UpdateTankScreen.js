@@ -72,10 +72,23 @@ const UpdateTankScreen = ({ navigation }) => {
         capacity: parseFloat(capacity),
         number: parseInt(number, 10),
       };
-      await updateTank(selectedTank.id, updateData);
-      Alert.alert("Sucesso", "Tanque atualizado com sucesso!");
-      navigation.goBack();
+  
+      // Verifique se o selectedTank tem um ID válido
+      if (!selectedTank || !selectedTank._id) {
+        Alert.alert("Erro", "ID do tanque não encontrado.");
+        return;
+      }
+  
+      // Chamada à API para atualizar
+      const response = await updateTank(selectedTank._id, updateData);
+      if (response?.data?.message) {
+        Alert.alert("Sucesso", response.data.message);
+        navigation.goBack(); // Redireciona para a tela anterior
+      } else {
+        Alert.alert("Erro", "Resposta inesperada da API.");
+      }
     } catch (error) {
+      console.error(error);
       Alert.alert("Erro", "Erro ao atualizar o tanque.");
     }
   };

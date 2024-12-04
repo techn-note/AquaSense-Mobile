@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -7,16 +7,19 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native"; // Para navegação
+import { AuthContext } from "../../context/AuthProvider"; // Importando o AuthContext
 import { getUserName } from "../../services/api";
-import { getToken } from "../../utils/Auth";
 import Header from "../common/Header";
 import Toolbar from "../common/Toolbar";
+import { getToken } from "../../utils/Auth";
 
 const DefinitionsScreen = () => {
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState("Usuário");
   const [userImage, setUserImage] = useState(""); // Caminho para a imagem do usuário, se necessário.
+  const { removeUserToken } = useContext(AuthContext); // Usando o contexto de autenticação
+  const navigation = useNavigation(); // Hook para navegação
 
-  // Função para carregar o nome do usuário
   useEffect(() => {
     fetchUserName();
   }, []);
@@ -36,10 +39,15 @@ const DefinitionsScreen = () => {
     }
   };
 
-  // Função de logout (simples)
-  const logout = () => {
-    // A função de logout pode ser implementada de acordo com o seu sistema de autenticação
-    Alert.alert("Você saiu da sessão.");
+  const logout = async () => {
+    try {
+      await removeUserToken(); // Remove o token e redefine o estado
+      Alert.alert("Sessão encerrada", "Você será redirecionado para a tela de login.");
+      navigation.replace("LoginScreen"); // Redireciona para a tela de login
+    } catch (error) {
+      console.error("Erro ao encerrar a sessão:", error);
+      Alert.alert("Erro", "Não foi possível encerrar a sessão.");
+    }
   };
 
   return (
