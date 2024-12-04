@@ -18,7 +18,7 @@ export default function DataScreen({ navigation }) {
       <>
         <CustomButton
           title="Gráficos"
-          onPress={() => navigation.navigate("GraphsScreen")}
+          onPress={() => navigation.navigate("GraphScreen")}
         />
         <CustomButton
           title="Atualizar Tanque"

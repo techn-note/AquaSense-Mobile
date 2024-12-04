@@ -1,35 +1,85 @@
-import React from "react";
-import { View, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  Image,
+} from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const Toolbar = () => {
+  const [selectedIcon, setSelectedIcon] = useState("home"); // Default to home
   const navigation = useNavigation();
+  const route = useRoute(); // Pegando a rota atual
+
+  useEffect(() => {
+    // Verificando qual a tela ativa e definindo o ícone selecionado
+    switch (route.name) {
+      case "HomeScreen":
+        setSelectedIcon("home");
+        break;
+      case "DefinitionsScreen":
+        setSelectedIcon("definitions");
+        break;
+      case "DataScreen":
+        setSelectedIcon("document");
+        break;
+      default:
+        setSelectedIcon("home");
+    }
+  }, [route.name]); // Atualiza quando a tela muda
+
+  const handleIconPress = (icon, screen) => {
+    setSelectedIcon(icon);
+    navigation.navigate(screen); // Navega para a tela correspondente
+  };
 
   return (
     <View style={styles.toolBar}>
-      {/* Botão para a tela "Description" */}
+      {/* Botão para a tela "DataScreen" */}
       <TouchableOpacity
-        style={styles.iconButton}
-        onPress={() => navigation.navigate("DataScreen")}
+        style={[styles.iconButton, selectedIcon === "document" && styles.selectedButton]}
+        onPress={() => handleIconPress("document", "DataScreen")}
       >
-        <MaterialIcons name="description" size={24} color="#6C6C6C" />
+        <Image
+          source={
+            selectedIcon === "document"
+              ? require("../../assets/icons/icon_document_1.png")
+              : require("../../assets/icons/icon_document_0.png")
+          }
+          style={styles.iconImage}
+        />
       </TouchableOpacity>
 
-      {/* Botão central para a tela "Home" */}
+      {/* Botão central para a tela "HomeScreen" */}
       <TouchableOpacity
-        style={[styles.iconButton, styles.centerButton]}
-        onPress={() => navigation.navigate("HomeScreen")}
+        style={[styles.iconButton, selectedIcon === "home" && styles.selectedButton]}
+        onPress={() => handleIconPress("home", "HomeScreen")}
       >
-        <MaterialIcons name="home" size={24} color="#FFFFFF" />
+        <Image
+          source={
+            selectedIcon === "home"
+              ? require("../../assets/icons/icon_home_1.png")
+              : require("../../assets/icons/icon_home_0.png")
+          }
+          style={styles.iconImage}
+        />
       </TouchableOpacity>
 
-      {/* Botão para a tela "Settings" */}
+      {/* Botão para a tela "DefinitionsScreen" */}
       <TouchableOpacity
-        style={styles.iconButton}
-        onPress={() => navigation.navigate("SettingsScreen")}
+        style={[styles.iconButton, selectedIcon === "definitions" && styles.selectedButton]}
+        onPress={() => handleIconPress("definitions", "DefinitionsScreen")}
       >
-        <MaterialIcons name="tune" size={24} color="#6C6C6C" />
+        <Image
+          source={
+            selectedIcon === "definitions"
+              ? require("../../assets/icons/Icon_definitions_1.png")
+              : require("../../assets/icons/Icon_definitions_0.png")
+          }
+          style={styles.iconImage}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -52,7 +102,6 @@ const styles = StyleSheet.create({
     elevation: 4,
     position: "absolute",
     bottom: Dimensions.get("window").height * 0.0375, // 3.75% da altura da tela
-    position: 'absolute'
   },
   iconButton: {
     width: 40,
@@ -60,13 +109,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  centerButton: {
-    backgroundColor: "#007BFF",
+  selectedButton: {
+    backgroundColor: "#007BFF", // Cor de destaque
     width: 50,
     height: 50,
     borderRadius: 28,
     justifyContent: "center",
     alignItems: "center",
+  },
+  iconImage: {
+    width: 24,
+    height: 24,
   },
 });
 

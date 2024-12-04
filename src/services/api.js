@@ -9,7 +9,7 @@ const api = axios.create({
 export async function getTanques() {
   try {
     const response = await api.get("/tanks");
-    return response;
+    return response.data;
   } catch (error) {
     console.error("Erro ao buscar tanques:", error);
     throw error;
@@ -179,7 +179,7 @@ export const getTankByName = async (name) => {
 export const getPeixeByName = async (name) => {
   try {
     const response = await api.get(`/peixes/name/${name}`);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error("Erro ao buscar peixe pelo nome:", error.response?.data || error.message);
     throw error;
