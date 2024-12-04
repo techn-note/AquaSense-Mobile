@@ -4,21 +4,17 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 function Dropdown({ items, selectedValue, onChange }) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(selectedValue);
-
-  const handleValueChange = (newValue) => {
-    setValue(newValue);
-    if (onChange) onChange(newValue);
-  };
 
   return (
     <View style={styles.container}>
       <DropDownPicker
         open={open}
-        value={value}
+        value={selectedValue}  // Aqui, usamos selectedValue diretamente
         items={items}
         setOpen={setOpen}
-        setValue={handleValueChange}
+        setValue={(newValue) => {
+          if (onChange) onChange(newValue); // Passa para o onChange do pai
+        }}
         style={styles.dropdown}
         textStyle={styles.text}
         dropDownContainerStyle={styles.dropdownContainer}

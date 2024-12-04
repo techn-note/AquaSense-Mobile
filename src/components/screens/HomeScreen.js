@@ -22,10 +22,10 @@ import Header from "../common/Header";
 import Toolbar from "../common/Toolbar";
 
 const PARAMETROS_LIMITE = {
-  Temperatura: { min: 18.0, max: 24.0 },
+  Temperatura: { min: 18.0, max: 28.0 },
   Ph: { min: 6.8, max: 7.2 },
-  Volume: { min: 45.0, max: 55.0 },
-  Tds: { min: 150, max: 300 },
+  Volume: { min: 25.0, max: 30.0 },
+  Tds: { min: 200, max: 400 },
 };
 
 export default function HomeScreen({ navigation }) {
@@ -42,17 +42,16 @@ export default function HomeScreen({ navigation }) {
 
   const fetchTanques = async () => {
     try {
-      const response = await getTanques();
-      const tanques = response?.data?.data || [];
+      const tanques = await getTanques();
       if (!Array.isArray(tanques)) {
         throw new Error("O formato dos dados de tanques é inválido.");
       }
-
+  
       const formatted = tanques.map((tanque) => ({
         label: tanque.name,
         value: tanque.name,
       }));
-
+  
       setFormattedTanques(formatted);
       if (formatted.length > 0) {
         console.log(`Tanque selecionado: ${formatted[0].value}`);
@@ -62,6 +61,7 @@ export default function HomeScreen({ navigation }) {
       console.error("Erro ao buscar tanques:", error);
     }
   };
+  
 
   
 
@@ -169,8 +169,9 @@ export default function HomeScreen({ navigation }) {
           <Dropdown
             items={formattedTanques}
             selectedValue={selectedTank}
-            onChange={handleTankChange}
+            onChange={(newValue) => setSelectedTank(newValue)}
           />
+
         </View>
 
         {/* Status Principal */}

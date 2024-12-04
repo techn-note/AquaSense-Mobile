@@ -2,19 +2,20 @@ import axios from "axios";
 
 
 const api = axios.create({
-  baseURL: "http://10.0.2.2:5000",
+  baseURL: "http://127.0.0.1:5000",
   timeout: 15000,
 });
 
 export async function getTanques() {
   try {
     const response = await api.get("/tanks");
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error("Erro ao buscar tanques:", error);
     throw error;
   }
 }
+
 
 export async function getPeixes() {
   try {
