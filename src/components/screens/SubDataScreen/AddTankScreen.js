@@ -9,13 +9,14 @@ import {
 } from "react-native";
 import Header from "../../common/Header";
 import Toolbar from "../../common/Toolbar";
+import { createTank } from "../../../services/api";
 
-const AddTankScreen = () => {
+const AddTankScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [value, setValue] = useState("");
+  const [number, setNumber] = useState("");
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Validações básicas
     if (name.length === 0 || name.length > 10) {
       Alert.alert("Erro", "O nome deve ter entre 1 e 10 caracteres.");
@@ -25,16 +26,35 @@ const AddTankScreen = () => {
       Alert.alert("Erro", "A capacidade deve ser um número maior que 0.");
       return;
     }
-    if (!value || isNaN(value) || value <= 0) {
-      Alert.alert("Erro", "O valor deve ser um número maior que 0.");
+    if (!number || isNaN(number) || number <= 0) {
+      Alert.alert("Erro", "O número do tanque deve ser um número maior que 0.");
       return;
     }
 
-    // Lógica de salvar o tanque
-    Alert.alert("Sucesso", "Tanque adicionado com sucesso!");
-    setName("");
-    setCapacity("");
-    setValue("");
+    const tankData = {
+      name,
+      capacity,
+      number: parseInt(number, 10),
+    };
+
+    try {
+      const response = await createTank(tankData);
+
+      if (response && response.data.message === "Tank created successfully") {
+        Alert.alert("Sucesso", "Tanque adicionado com sucesso!");
+
+        setName("");
+        setCapacity("");
+        setNumber("");
+
+        navigation.navigate("HomeScreen");
+      } else {
+        Alert.alert("Erro", "Ocorreu um erro ao adicionar o tanque.");
+      }
+    } catch (error) {
+      console.error("Erro ao criar tanque:", error);
+      Alert.alert("Erro", "Erro ao criar tanque. Tente novamente.");
+    }
   };
 
   return (
@@ -62,13 +82,13 @@ const AddTankScreen = () => {
           onChangeText={setCapacity}
         />
 
-        {/* Campo Valor */}
+        {/* Campo Número do Tanque */}
         <TextInput
           style={styles.input}
-          placeholder="Valor (R$)"
+          placeholder="Número do Tanque"
           keyboardType="numeric"
-          value={value}
-          onChangeText={setValue}
+          value={number}
+          onChangeText={setNumber}
         />
 
         {/* Botão de Salvar */}

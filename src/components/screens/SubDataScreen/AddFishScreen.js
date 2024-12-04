@@ -5,19 +5,21 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Alert,
+  Alert
 } from "react-native";
 import Header from "../../common/Header";
 import Toolbar from "../../common/Toolbar";
-
+import { createPeixe } from "../../../services/api";
+import { useNavigation } from '@react-navigation/native';
 const AddFishScreen = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [species, setSpecies] = useState("");
   const [weight, setWeight] = useState("");
   const [quantity, setQuantity] = useState("");
+  const navigation = useNavigation();
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Validações básicas
     if (name.length === 0 || name.length > 15) {
       Alert.alert("Erro", "O nome deve ter entre 1 e 15 caracteres.");
@@ -40,13 +42,31 @@ const AddFishScreen = () => {
       return;
     }
 
-    // Lógica de salvar o peixe
-    Alert.alert("Sucesso", "Peixe adicionado com sucesso!");
-    setName("");
-    setAge("");
-    setSpecies("");
-    setWeight("");
-    setQuantity("");
+    // Prepara os dados para enviar à API
+    const peixeData = {
+      nome: name,
+      idade: parseInt(age), // Converte para número
+      especie: species,
+      peso: parseFloat(weight), // Converte para número
+      quantidade: parseInt(quantity) // Converte para número
+    };
+
+    try {
+      const response = await createPeixe(peixeData); // Chama a função para criar peixe
+      if (response.data) {
+        Alert.alert("Sucesso", "Peixe adicionado com sucesso!");
+        setName("");
+        setAge("");
+        setSpecies("");
+        setWeight("");
+        setQuantity("");
+
+        // Redireciona para a HomeScreen após sucesso
+        navigation.navigate("HomeScreen");
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Erro ao cadastrar o peixe. Tente novamente.");
+    }
   };
 
   return (

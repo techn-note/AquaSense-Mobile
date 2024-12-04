@@ -157,13 +157,16 @@ export const updateTank = async (tankId, updateData) => {
 
 export const updatePeixe = async (peixeId, updateData) => {
   try {
+    console.log("Enviando dados para a API:", peixeId, updateData);
     const response = await api.put(`/peixes/${peixeId}`, updateData);
+    console.log("Resposta da API:", response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao atualizar peixe:", error.response?.data || error.message);
     throw error;
   }
 };
+
 
 
 export const getTankByName = async (name) => {

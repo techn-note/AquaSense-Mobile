@@ -69,26 +69,42 @@ const UpdateFishScreen = ({ navigation }) => {
   };
 
   // Atualizar peixe
-  const handleUpdate = async () => {
-    if (!name || !age || !species || !weight || !quantity) {
-      Alert.alert("Erro", "Todos os campos são obrigatórios.");
-      return;
-    }
-    try {
-      const updateData = {
-        nome: name,
-        idade: parseInt(age, 10),
-        especies: species,
-        peso: parseFloat(weight),
-        quantidade: parseInt(quantity, 10),
-      };
-      await updatePeixe(selectedFish.id, updateData);
-      Alert.alert("Sucesso", "Peixe atualizado com sucesso!");
-      navigation.goBack();
-    } catch (error) {
-      Alert.alert("Erro", "Erro ao atualizar o peixe.");
-    }
-  };
+const handleUpdate = async () => {
+  if (!name || !age || !species || !weight || !quantity) {
+    Alert.alert("Erro", "Todos os campos são obrigatórios.");
+    return;
+  }
+  
+  try {
+    const updateData = {
+      nome: name,
+      idade: parseInt(age, 10),
+      especie: species,  // Corrigido de 'especies' para 'especie'
+      peso: parseFloat(weight),
+      quantidade: parseInt(quantity, 10),
+    };
+
+    // Confirmação do ID e dados enviados
+    console.log("Atualizando peixe:", selectedFish._id, updateData);
+
+    // Chamada para atualizar o peixe
+    const updatedFish = await updatePeixe(selectedFish._id, updateData);
+
+    // Confirmação da resposta da API
+    console.log("Resposta da atualização:", updatedFish);
+
+    // Exibir alerta de sucesso
+    Alert.alert("Sucesso", "Peixe atualizado com sucesso!");
+
+    // Redirecionar para a tela Home
+    navigation.goBack();  // Redireciona para a tela anterior, geralmente a HomeScreen
+
+  } catch (error) {
+    Alert.alert("Erro", "Erro ao atualizar o peixe.");
+    console.error("Erro ao atualizar peixe:", error.response?.data || error.message);
+  }
+};
+
 
   if (loading) {
     return (
