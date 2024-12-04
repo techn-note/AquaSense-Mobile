@@ -5,7 +5,8 @@ import LoginScreen from "../components/screens/LoginScreen";
 import HomeScreen from "../components/screens/HomeScreen";
 import RegisterScreen from "../components/screens/RegisterScreen.js";
 import DataScreen from "../components/screens/DataScreen.js";
-import { AddTankScreen, AddFishScreen } from "../components/screens/SubDataScreen";
+import AddTankScreen from "../components/screens/SubDataScreen/AddTankScreen.js";
+import AddFishScreen from "../components/screens/SubDataScreen/AddFishScreen.js";
 
 const Stack = createStackNavigator();
 
@@ -46,7 +47,6 @@ export default function App() {
           component={AddTankScreen}
           options={{ title: "AddTank" }}
         />
-        
       </Stack.Navigator>
     </NavigationContainer>
   );

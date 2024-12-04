@@ -1,20 +1,42 @@
-import axios from 'axios';
+import axios from "axios";
 
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:5000",
-  timeout: 5000,
+  baseURL: "http://10.0.2.2:5000",
+  timeout: 15000,
 });
 
+export async function getTanques() {
+  try {
+    const response = await api.get("/tanks");
+    return response;
+  } catch (error) {
+    console.error("Erro ao buscar tanques:", error);
+    throw error;
+  }
+}
+
+export async function getPeixes() {
+  try {
+    const response = await api.get("/peixes");
+    return response;
+  } catch (error) {
+    console.error("Erro ao buscar tanques:", error);
+    throw error;
+  }
+}
 
 export const getLatestAtualizacao = async (tanque) => {
   try {
-    const response = await api.get('/atualizacoes/latest', {
+    const response = await api.get("/atualizacoes/latest", {
       params: { tanque },
     });
     return response.data;
   } catch (error) {
-    console.error('Erro ao buscar a última atualização:', error.response?.data || error.message);
+    console.error(
+      "Erro ao buscar a última atualização:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
@@ -22,29 +44,33 @@ export const getLatestAtualizacao = async (tanque) => {
 
 export const createAtualizacao = async (tanque) => {
   try {
-    const response = await api.post('/atualizacoes', null, {
+    const response = await api.post("/atualizacoes", null, {
       params: { tanque },
     });
     return response.data;
   } catch (error) {
-    console.error('Erro ao criar atualização:', error.response?.data || error.message);
+    console.error(
+      "Erro ao criar atualização:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
 
-
 export const getLatestSensorData = async (tipo, tanque) => {
   try {
-    const response = await api.get('/sensores/latest', {
+    const response = await api.get("/sensores/latest", {
       params: { tipo, tanque },
     });
     return response.data;
   } catch (error) {
-    console.error('Erro ao buscar dados do sensor:', error.response?.data || error.message);
+    console.error(
+      "Erro ao buscar dados do sensor:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
-
 
 export const login = async (email, password) => {
   try {
@@ -56,7 +82,6 @@ export const login = async (email, password) => {
   }
 };
 
-
 export const register = async (userData) => {
   try {
     const response = await api.post("/register", userData);
@@ -67,7 +92,6 @@ export const register = async (userData) => {
   }
 };
 
-
 export const getUserName = async (token) => {
   try {
     const response = await api.get("/profile", {
@@ -75,7 +99,10 @@ export const getUserName = async (token) => {
     });
     return response.data.data.name;
   } catch (error) {
-    console.error("Erro ao buscar perfil:", error.response?.data || error.message);
+    console.error(
+      "Erro ao buscar perfil:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };

@@ -1,22 +1,15 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 
-const Dropdown = () => {
+function Dropdown({ items, selectedValue, onChange }) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('tanque1');
-  const [items, setItems] = useState([
-    { label: 'Tanque 1', value: 'tanque1' },
-    { label: 'Tanque 2', value: 'tanque2' },
-  ]);
+  const [value, setValue] = useState(selectedValue);
 
-  const handleValueChange = (value) => {
-    setValue(value);
-    if (onChange) {
-      onChange(value);
-    }
+  const handleValueChange = (newValue) => {
+    setValue(newValue);
+    if (onChange) onChange(newValue);
   };
-  
 
   return (
     <View style={styles.container}>
@@ -26,14 +19,13 @@ const Dropdown = () => {
         items={items}
         setOpen={setOpen}
         setValue={handleValueChange}
-        setItems={setItems}
         style={styles.dropdown}
         textStyle={styles.text}
         dropDownContainerStyle={styles.dropdownContainer}
       />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -43,11 +35,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 10,
     marginTop: 5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    color:"#007BFF",
-    borderWidth: 0
+    flexDirection: "row",
+    alignItems: "center",
+    color: "#007BFF",
+    borderWidth: 0,
   },
   dropdown: {
     borderWidth: 0,
@@ -67,7 +58,7 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_Medium",
   },
   dropdownContainer: {
-    borderWidth: 0
+    borderWidth: 0,
   },
 });
 

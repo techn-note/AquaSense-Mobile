@@ -2,16 +2,18 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
 const Header = ({ children }) => {
+  const hasChildren = React.Children.count(children) > 0;
+
   return (
     <View style={styles.header}>
-      <View style={styles.bar}>
+      <View style={[styles.bar, hasChildren && styles.barWithChildren]}>
         <Image
           source={require("../../assets/icons/icon_bar.png")}
           style={styles.logo}
         />
         <Text style={styles.textLogo}>Aquasense</Text>
       </View>
-      {children && <View style={styles.childrenContainer}>{children}</View>}
+      {hasChildren && <View style={styles.childrenContainer}>{children}</View>}
     </View>
   );
 };
@@ -28,11 +30,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
-    borderStyle: "solid",
+    padding: 5,
+    marginBottom: 15,
+  },
+  barWithChildren: {
     padding: 10,
     borderBottomWidth: 1,
+    borderStyle: "solid",
     borderBottomColor: "#F5F5F5",
-    marginBottom: 15,
   },
   textLogo: {
     color: "#f5f5f5",
@@ -44,7 +49,9 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 20,
   },
-
+  childrenContainer: {
+    marginTop: 15,
+  },
 });
 
 export default Header;

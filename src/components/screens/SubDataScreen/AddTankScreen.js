@@ -10,43 +10,31 @@ import {
 import Header from "../../common/Header";
 import Toolbar from "../../common/Toolbar";
 
-const AddFishScreen = () => {
+const AddTankScreen = () => {
   const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [species, setSpecies] = useState("");
-  const [weight, setWeight] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [value, setValue] = useState("");
 
   const handleSave = () => {
     // Validações básicas
-    if (name.length === 0 || name.length > 15) {
-      Alert.alert("Erro", "O nome deve ter entre 1 e 15 caracteres.");
+    if (name.length === 0 || name.length > 10) {
+      Alert.alert("Erro", "O nome deve ter entre 1 e 10 caracteres.");
       return;
     }
-    if (!age || isNaN(age) || age <= 0) {
-      Alert.alert("Erro", "A idade deve ser um número maior que 0.");
+    if (!capacity || isNaN(capacity) || capacity <= 0) {
+      Alert.alert("Erro", "A capacidade deve ser um número maior que 0.");
       return;
     }
-    if (species.length === 0) {
-      Alert.alert("Erro", "A espécie não pode estar vazia.");
-      return;
-    }
-    if (!weight || isNaN(weight) || weight <= 0) {
-      Alert.alert("Erro", "O peso deve ser um número maior que 0.");
-      return;
-    }
-    if (!quantity || isNaN(quantity) || quantity <= 0) {
-      Alert.alert("Erro", "A quantidade deve ser um número maior que 0.");
+    if (!value || isNaN(value) || value <= 0) {
+      Alert.alert("Erro", "O valor deve ser um número maior que 0.");
       return;
     }
 
-    // Lógica de salvar o peixe
-    Alert.alert("Sucesso", "Peixe adicionado com sucesso!");
+    // Lógica de salvar o tanque
+    Alert.alert("Sucesso", "Tanque adicionado com sucesso!");
     setName("");
-    setAge("");
-    setSpecies("");
-    setWeight("");
-    setQuantity("");
+    setCapacity("");
+    setValue("");
   };
 
   return (
@@ -54,50 +42,33 @@ const AddFishScreen = () => {
       <Header />
 
       <View style={styles.form}>
-        <Text style={styles.title}>Adicionar Peixe</Text>
+        <Text style={styles.title}>Adicionar Tanque</Text>
 
         {/* Campo Nome */}
         <TextInput
           style={styles.input}
-          placeholder="Nome (máx. 15 caracteres)"
-          maxLength={15}
+          placeholder="Nome (máx. 10 caracteres)"
+          maxLength={10}
           value={name}
           onChangeText={setName}
         />
 
-        {/* Campo Idade */}
+        {/* Campo Capacidade */}
         <TextInput
           style={styles.input}
-          placeholder="Idade em Dias"
+          placeholder="Capacidade (Litros)"
           keyboardType="numeric"
-          value={age}
-          onChangeText={setAge}
+          value={capacity}
+          onChangeText={setCapacity}
         />
 
-        {/* Campo Espécie */}
+        {/* Campo Valor */}
         <TextInput
           style={styles.input}
-          placeholder="Espécie"
-          value={species}
-          onChangeText={setSpecies}
-        />
-
-        {/* Campo Peso */}
-        <TextInput
-          style={styles.input}
-          placeholder="Peso (Kg)"
+          placeholder="Valor (R$)"
           keyboardType="numeric"
-          value={weight}
-          onChangeText={setWeight}
-        />
-
-        {/* Campo Quantidade */}
-        <TextInput
-          style={styles.input}
-          placeholder="Quantidade"
-          keyboardType="numeric"
-          value={quantity}
-          onChangeText={setQuantity}
+          value={value}
+          onChangeText={setValue}
         />
 
         {/* Botão de Salvar */}
@@ -105,7 +76,6 @@ const AddFishScreen = () => {
           <Text style={styles.saveButtonText}>Salvar</Text>
         </TouchableOpacity>
       </View>
-
       <Toolbar />
     </View>
   );
@@ -150,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddFishScreen;
+export default AddTankScreen;

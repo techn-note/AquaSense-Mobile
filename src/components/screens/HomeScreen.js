@@ -14,6 +14,7 @@ import {
   getLatestSensorData,
   createAtualizacao,
   getLatestAtualizacao,
+  getTanques,
 } from "../../services/api";
 import { getToken } from "../../utils/Auth";
 import Dropdown from "../common/Dropdown";
@@ -29,19 +30,40 @@ const PARAMETROS_LIMITE = {
 
 export default function HomeScreen({ navigation }) {
   const [userName, setUserName] = useState("Usuário");
-  const [selectedTank, setSelectedTank] = useState("Tanque 1");
-  const handleTankChange = (newValue) => {
-    setSelectedTank(newValue);
-  };
-
+  const [selectedTank, setSelectedTank] = useState(null);
+  const [formattedTanques, setFormattedTanques] = useState([]);
   const [sensorData, setSensorData] = useState({
     temperatura: null,
     ph: null,
     tds: null,
     volume: null,
   });
-
   const [latestUpdate, setLatestUpdate] = useState(null);
+
+  const fetchTanques = async () => {
+    try {
+      const response = await getTanques();
+      const tanques = response?.data?.data || [];
+      if (!Array.isArray(tanques)) {
+        throw new Error("O formato dos dados de tanques é inválido.");
+      }
+
+      const formatted = tanques.map((tanque) => ({
+        label: tanque.name,
+        value: tanque.name,
+      }));
+
+      setFormattedTanques(formatted);
+      if (formatted.length > 0) {
+        console.log(`Tanque selecionado: ${formatted[0].value}`);
+        setSelectedTank(formatted[0].value);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar tanques:", error);
+    }
+  };
+
+  
 
   const fetchUserName = async () => {
     try {
@@ -59,11 +81,12 @@ export default function HomeScreen({ navigation }) {
   };
 
   const fetchSensorData = async () => {
+    if (!selectedTank) return;
     try {
       const sensorTypes = ["Temperatura", "Ph", "Tds", "Volume"];
-      const tank = selectedTank;
-
       const fetchedData = {};
+
+      const tank = selectedTank.toLowerCase()
 
       for (const type of sensorTypes) {
         const response = await getLatestSensorData(type, tank);
@@ -79,19 +102,19 @@ export default function HomeScreen({ navigation }) {
   };
 
   const fetchLatestUpdate = async () => {
+    if (!selectedTank) return;
     try {
       const response = await getLatestAtualizacao(selectedTank);
-      if (response?.data) {
-        setLatestUpdate(
-          response.data.mensagem || "Última atualização não encontrada."
-        );
-      }
+      setLatestUpdate(
+        response?.data?.mensagem || "Última atualização não encontrada."
+      );
     } catch (error) {
       setLatestUpdate("Erro ao buscar última atualização.");
     }
   };
 
   const createUpdate = async () => {
+    if (!selectedTank) return;
     try {
       await createAtualizacao(selectedTank);
       console.log(`Atualização criada para o ${selectedTank}`);
@@ -100,50 +123,42 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  const calculateProgress = (parametro, valor) => {
-    const limite = PARAMETROS_LIMITE[parametro];
-
-    if (valor === null || valor === undefined) {
-      return 0;
-    }
-
-    if (valor < limite.min) {
-      return 10;
-    } else if (valor > limite.max) {
-      return 100;
-    } else {
-      const progress = ((valor - limite.min) / (limite.max - limite.min)) * 100;
-
-      const optimisticProgress = progress + 50;
-      return optimisticProgress > 100 ? 100 : optimisticProgress;
-    }
-  };
-
-  const calculateOverallProgress = () => {
-    const { temperatura, ph, Tds, volume } = sensorData;
-
-    const tempProgress = calculateProgress("Temperatura", temperatura?.valor);
-    const phProgress = calculateProgress("Ph", ph?.valor);
-    const oxProgress = calculateProgress("Tds", Tds?.valor);
-    const volProgress = calculateProgress("Volume", volume?.valor);
-
-    const overallProgress =
-      (tempProgress + phProgress + oxProgress + volProgress) / 4;
-
-    return overallProgress;
+  const handleTankChange = (newValue) => {
+    setSelectedTank(newValue);
   };
 
   useEffect(() => {
+    fetchTanques();
     fetchUserName();
-    createUpdate();
   }, []);
 
   useEffect(() => {
-    fetchSensorData();
-    fetchLatestUpdate();
-    createUpdate();
+    if (selectedTank) {
+      fetchSensorData();
+      fetchLatestUpdate();
+      createUpdate();
+    }
   }, [selectedTank]);
 
+  const calculateProgress = (parametro, valor) => {
+    const limite = PARAMETROS_LIMITE[parametro];
+    if (valor === null || valor === undefined) return 0;
+
+    if (valor < limite.min) return 10;
+    if (valor > limite.max) return 100;
+
+    const progress = ((valor - limite.min) / (limite.max - limite.min)) * 100;
+    return Math.min(progress + 50, 100);
+  };
+
+  const calculateOverallProgress = () => {
+    const { temperatura, ph, tds, volume } = sensorData;
+    const tempProgress = calculateProgress("Temperatura", temperatura?.valor);
+    const phProgress = calculateProgress("Ph", ph?.valor);
+    const tdsProgress = calculateProgress("Tds", tds?.valor);
+    const volProgress = calculateProgress("Volume", volume?.valor);
+    return (tempProgress + phProgress + tdsProgress + volProgress) / 4;
+  };
   return (
     <View style={styles.container}>
       {/* Cabeçalho */}
@@ -151,7 +166,11 @@ export default function HomeScreen({ navigation }) {
         {/* Avatar e Dropdown */}
         <View style={styles.avatar}>
           <Text style={styles.greeting}>Olá, {userName}!</Text>
-          <Dropdown onChange={handleTankChange} />
+          <Dropdown
+            items={formattedTanques}
+            selectedValue={selectedTank}
+            onChange={handleTankChange}
+          />
         </View>
 
         {/* Status Principal */}
@@ -182,9 +201,7 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.dataContainer}>
             <Text style={styles.label}>Tds</Text>
             <Text style={styles.value}>
-              {sensorData.tds
-                ? `${sensorData.tds.valor} PPM`
-                : "Carregando..."}
+              {sensorData.tds ? `${sensorData.tds.valor} PPM` : "Carregando..."}
             </Text>
           </View>
           <View style={styles.separator} />
@@ -218,9 +235,7 @@ export default function HomeScreen({ navigation }) {
         </View>
       </View>
 
-      <Toolbar/>
-
-
+      <Toolbar />
     </View>
   );
 }
@@ -228,7 +243,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F9F9F9",
-    height: '100%'
+    height: "100%",
   },
   greeting: {
     fontSize: 24,
@@ -310,5 +325,4 @@ const styles = StyleSheet.create({
     height: "60%",
     backgroundColor: "#007BFF",
   },
-  
 });

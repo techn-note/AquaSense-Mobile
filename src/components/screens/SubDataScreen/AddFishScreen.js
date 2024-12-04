@@ -10,7 +10,7 @@ import {
 import Header from "../../common/Header";
 import Toolbar from "../../common/Toolbar";
 
-function AddFishScreen() {
+const AddFishScreen = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [species, setSpecies] = useState("");
@@ -19,24 +19,24 @@ function AddFishScreen() {
 
   const handleSave = () => {
     // Validações básicas
-    if (!name || name.length === 0) {
-      Alert.alert("Erro", "O nome é obrigatório.");
+    if (name.length === 0 || name.length > 15) {
+      Alert.alert("Erro", "O nome deve ter entre 1 e 15 caracteres.");
       return;
     }
     if (!age || isNaN(age) || age <= 0) {
-      Alert.alert("Erro", "A idade deve ser um número positivo.");
+      Alert.alert("Erro", "A idade deve ser um número maior que 0.");
       return;
     }
-    if (!species || species.length === 0) {
-      Alert.alert("Erro", "A espécie é obrigatória.");
+    if (species.length === 0) {
+      Alert.alert("Erro", "A espécie não pode estar vazia.");
       return;
     }
     if (!weight || isNaN(weight) || weight <= 0) {
-      Alert.alert("Erro", "O peso deve ser um número positivo.");
+      Alert.alert("Erro", "O peso deve ser um número maior que 0.");
       return;
     }
     if (!quantity || isNaN(quantity) || quantity <= 0) {
-      Alert.alert("Erro", "A quantidade deve ser um número positivo.");
+      Alert.alert("Erro", "A quantidade deve ser um número maior que 0.");
       return;
     }
 
@@ -52,72 +52,80 @@ function AddFishScreen() {
   return (
     <View style={styles.container}>
       <Header />
-      <Text style={styles.title}>Adicionar Peixe</Text>
 
-      {/* Campo Nome */}
-      <TextInput
-        style={styles.input}
-        placeholder="Nome do peixe"
-        value={name}
-        onChangeText={setName}
-      />
+      <View style={styles.form}>
+        <Text style={styles.title}>Adicionar Peixe</Text>
 
-      {/* Campo Idade */}
-      <TextInput
-        style={styles.input}
-        placeholder="Idade (em dias)"
-        keyboardType="numeric"
-        value={age}
-        onChangeText={setAge}
-      />
+        {/* Campo Nome */}
+        <TextInput
+          style={styles.input}
+          placeholder="Nome (máx. 15 caracteres)"
+          maxLength={15}
+          value={name}
+          onChangeText={setName}
+        />
 
-      {/* Campo Espécie */}
-      <TextInput
-        style={styles.input}
-        placeholder="Espécie"
-        value={species}
-        onChangeText={setSpecies}
-      />
+        {/* Campo Idade */}
+        <TextInput
+          style={styles.input}
+          placeholder="Idade em Dias"
+          keyboardType="numeric"
+          value={age}
+          onChangeText={setAge}
+        />
 
-      {/* Campo Peso */}
-      <TextInput
-        style={styles.input}
-        placeholder="Peso (em gramas)"
-        keyboardType="numeric"
-        value={weight}
-        onChangeText={setWeight}
-      />
+        {/* Campo Espécie */}
+        <TextInput
+          style={styles.input}
+          placeholder="Espécie"
+          value={species}
+          onChangeText={setSpecies}
+        />
 
-      {/* Campo Quantidade */}
-      <TextInput
-        style={styles.input}
-        placeholder="Quantidade"
-        keyboardType="numeric"
-        value={quantity}
-        onChangeText={setQuantity}
-      />
+        {/* Campo Peso */}
+        <TextInput
+          style={styles.input}
+          placeholder="Peso (Kg)"
+          keyboardType="numeric"
+          value={weight}
+          onChangeText={setWeight}
+        />
 
-      {/* Botão de Salvar */}
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveButtonText}>Salvar</Text>
-      </TouchableOpacity>
+        {/* Campo Quantidade */}
+        <TextInput
+          style={styles.input}
+          placeholder="Quantidade"
+          keyboardType="numeric"
+          value={quantity}
+          onChangeText={setQuantity}
+        />
+
+        {/* Botão de Salvar */}
+        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+          <Text style={styles.saveButtonText}>Salvar</Text>
+        </TouchableOpacity>
+      </View>
+
       <Toolbar />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#f5f5f5",
-    padding: 20,
-    marginTop: 20,
+    height: "100%",
+  },
+  form: {
+    marginTop: 10,
+    padding: 45,
   },
   title: {
     fontSize: 24,
     fontFamily: "Montserrat_Bold",
     color: "#007BFF",
     marginBottom: 20,
-    textAlign: "center",
   },
   input: {
     borderWidth: 1,
