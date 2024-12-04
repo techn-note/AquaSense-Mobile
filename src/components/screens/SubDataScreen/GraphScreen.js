@@ -26,7 +26,6 @@ const GraphScreen = () => {
 
   const screenWidth = Dimensions.get("window").width;
 
-
   useEffect(() => {
     const fetchTanques = async () => {
       try {
@@ -40,7 +39,6 @@ const GraphScreen = () => {
     fetchTanques();
   }, []);
 
-
   const fetchSensorData = async (tankName) => {
     try {
       const sensorTypes = ["Temperatura", "Ph", "Tds", "Volume"];
@@ -51,30 +49,36 @@ const GraphScreen = () => {
         volume: [],
         timestamps: [],
       };
-  
+
       for (const type of sensorTypes) {
         const response = await getLast10SensorData(type, tankName);
-  
-        // Log para verificar a resposta da API
-        console.log(`Resposta da API para ${type}:`, response);
-  
 
-        if (response && response.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
-
-          fetchedData[type.toLowerCase()] = response.data.data.map(item => item.valor);
-          fetchedData.timestamps = response.data.data.map(item => new Date(item.data).toLocaleString());
+        if (
+          response &&
+          response &&
+          Array.isArray(response) &&
+          response.length > 0
+        ) {
+          fetchedData[type.toLowerCase()] = response.map(
+            (item) => item.valor
+          );
+          fetchedData.timestamps = response.map((item) => {
+            const date = new Date(item.data);
+            const hours = date.getHours().toString().padStart(2, '0'); 
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${hours}h${minutes}`;
+          });
         } else {
-          // Adiciona uma mensagem de aviso somente se não houver dados
           console.warn(`Nenhum dado encontrado para o sensor: ${type} no tanque ${tankName}`);
         }
       }
-  
+
       setSensorData(fetchedData);
+      console.log(fetchedData)
     } catch (error) {
       console.error("Erro ao buscar dados do sensor:", error);
     }
   };
- 
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -101,64 +105,36 @@ const GraphScreen = () => {
           {sensorData && (
             <>
               {/* Gráfico de Temperatura */}
-              <View style={styles.card}>
-                <Text style={styles.cardTitle}>Temperatura (°C)</Text>
-                <LineChart
-                  data={{
-                    labels: sensorData.timestamps,
-                    datasets: [{ data: sensorData.temperatura }],
-                  }}
-                  width={screenWidth - 50}
-                  height={200}
-                  chartConfig={chartConfig}
-                  style={styles.chart}
-                />
-              </View>
+              <SensorCard
+                title="Temperatura (°C)"
+                data={sensorData.temperatura}
+                timestamps={sensorData.timestamps}
+                screenWidth={screenWidth}
+              />
 
               {/* Gráfico de pH */}
-              <View style={styles.card}>
-                <Text style={styles.cardTitle}>pH</Text>
-                <LineChart
-                  data={{
-                    labels: sensorData.timestamps,
-                    datasets: [{ data: sensorData.ph }],
-                  }}
-                  width={screenWidth - 50}
-                  height={200}
-                  chartConfig={chartConfig}
-                  style={styles.chart}
-                />
-              </View>
+              <SensorCard
+                title="pH"
+                data={sensorData.ph}
+                timestamps={sensorData.timestamps}
+                screenWidth={screenWidth}
+              />
 
               {/* Gráfico de TDS */}
-              <View style={styles.card}>
-                <Text style={styles.cardTitle}>TDS (ppm)</Text>
-                <LineChart
-                  data={{
-                    labels: sensorData.timestamps,
-                    datasets: [{ data: sensorData.tds }],
-                  }}
-                  width={screenWidth - 50}
-                  height={200}
-                  chartConfig={chartConfig}
-                  style={styles.chart}
-                />
-              </View>
+              <SensorCard
+                title="TDS (ppm)"
+                data={sensorData.tds}
+                timestamps={sensorData.timestamps}
+                screenWidth={screenWidth}
+              />
 
               {/* Gráfico de Volume */}
-              <View style={styles.card}>
-                <Text style={styles.cardTitle}>Volume (L)</Text>
-                <LineChart
-                  data={{
-                    labels: sensorData.timestamps,
-                    datasets: [{ data: sensorData.volume }],
-                  }}
-                  width={screenWidth - 50}
-                  height={200}
-                  chartConfig={chartConfig}
-                  style={styles.chart}
-                />
-              </View>
+              <SensorCard
+                title="Volume (L)"
+                data={sensorData.volume}
+                timestamps={sensorData.timestamps}
+                screenWidth={screenWidth}
+              />
             </>
           )}
 
@@ -176,6 +152,29 @@ const GraphScreen = () => {
 
       <Toolbar />
     </ScrollView>
+  );
+};
+
+const SensorCard = ({ title, data, timestamps, screenWidth }) => {
+  return data && data.length > 0 ? (
+    <View style={styles.card}>
+      <Text style={styles.cardTitle}>{title}</Text>
+      <LineChart
+        data={{
+          labels: timestamps,
+          datasets: [{ data }],
+        }}
+        width={screenWidth - 50}
+        height={200}
+        chartConfig={chartConfig}
+        style={styles.chart}
+      />
+    </View>
+  ) : (
+    <View style={styles.card}>
+      <Text style={styles.cardTitle}>{title}</Text>
+      <Text style={styles.noDataText}>Nenhum dado disponível no momento.</Text>
+    </View>
   );
 };
 
@@ -243,6 +242,12 @@ const styles = StyleSheet.create({
   },
   chart: {
     borderRadius: 16,
+  },
+  noDataText: {
+    fontSize: 16,
+    fontStyle: "italic",
+    color: "#888",
+    textAlign: "center",
   },
   backButton: {
     backgroundColor: "#ff5c5c",
