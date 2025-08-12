@@ -10,6 +10,7 @@ import AddFishScreen from "../components/screens/SubDataScreen/AddFishScreen.js"
 import UpdateFishScreen from "../components/screens/SubDataScreen/UpdateFishScreen.js";
 import UpdateTankScreen from "../components/screens/SubDataScreen/UpdateTankScreen.js";
 import GraphScreen from "../components/screens/SubDataScreen/GraphScreen.js";
+import GraphAIScreen from "../components/screens/GraphAIScreen.js";
 import DefinitionsScreen from "../components/screens/DefinitionsScreen.js";
 
 const Stack = createStackNavigator();
@@ -65,6 +66,11 @@ export default function App() {
           name="GraphScreen"
           component={GraphScreen}
           options={{ title: "Graph" }}
+        />
+        <Stack.Screen
+          name="GraphAIScreen"
+          component={GraphAIScreen}
+          options={{ title: "GraphAI" }}
         />
         <Stack.Screen
           name="DefinitionsScreen"

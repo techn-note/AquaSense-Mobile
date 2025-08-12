@@ -1,8 +1,9 @@
+import { IP, PORT } from "@env";
 import axios from "axios";
 
 
 const api = axios.create({
-  baseURL: "http://10.0.2.2:5000",
+  baseURL: "http://3.141.23.81:5000",
   timeout: 15000,
 });
 
@@ -189,5 +190,15 @@ export const getPeixeByName = async (name) => {
   }
 };
 
+
+export const predictIA = async (payload) => {
+  try {
+    const response = await api.post("/predict", payload);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao chamar IA /predict:", error.response?.data || error.message);
+    throw error;
+  }
+};
 
 export default api;

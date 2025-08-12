@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'http://3.141.23.81:5000',
 });
 
 
@@ -58,5 +58,6 @@ export const fetchData = async (endpoint) => {
     throw new Error('Erro ao buscar dados.');
   }
 };
+
 
 export default axiosInstance;

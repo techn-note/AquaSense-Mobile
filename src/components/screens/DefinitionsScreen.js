@@ -13,6 +13,7 @@ import { getUserName } from "../../services/api";
 import Header from "../common/Header";
 import Toolbar from "../common/Toolbar";
 import { getToken } from "../../utils/Auth";
+import { showModal } from "../../utils/modal";
 
 const DefinitionsScreen = () => {
   const [userName, setUserName] = useState("Usuário");
@@ -67,7 +68,7 @@ const DefinitionsScreen = () => {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => Alert.alert("Editar dados pessoais")}
+          onPress={() => showModal("EditProfile")}
         >
           <Text style={styles.buttonText}>Editar dados Pessoais</Text>
         </TouchableOpacity>

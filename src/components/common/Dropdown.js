@@ -2,22 +2,46 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
-function Dropdown({ items, selectedValue, onChange }) {
+function Dropdown({ items, selectedValue, onChange, background = false }) {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(selectedValue);
+  // Atualiza valor local e propaga para o pai
+  const handleChange = (val) => {
+    setValue(val);
+    if (onChange) onChange(val);
+  };
+
+  // Sincroniza valor local com prop externo
+  React.useEffect(() => {
+    setValue(selectedValue);
+  }, [selectedValue]);
+
+  // Estilos dinâmicos
+  const dynamicDropdownStyle = [
+    styles.dropdown,
+    background && { backgroundColor: "#007BFF" },
+  ];
+  const dynamicTextStyle = [styles.text, background && { color: "#fff" }];
 
   return (
     <View style={styles.container}>
       <DropDownPicker
         open={open}
-        value={selectedValue}  // Aqui, usamos selectedValue diretamente
+        value={value}
         items={items}
         setOpen={setOpen}
-        setValue={(newValue) => {
-          if (onChange) onChange(newValue); // Passa para o onChange do pai
-        }}
-        style={styles.dropdown}
-        textStyle={styles.text}
+        setValue={handleChange}
+        style={dynamicDropdownStyle}
+        textStyle={dynamicTextStyle}
         dropDownContainerStyle={styles.dropdownContainer}
+        listMode="SCROLLVIEW"
+        zIndex={1000}
+        zIndexInverse={1000}
+        placeholder="Selecione"
+        showArrowIcon={true}
+        showTickIcon={true}
+        autoScroll={true}
+        closeAfterSelecting={true}
       />
     </View>
   );

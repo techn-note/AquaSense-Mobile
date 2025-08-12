@@ -28,6 +28,10 @@ export default function DataScreen({ navigation }) {
           title="Cadastrar Tanque"
           onPress={() => navigation.navigate("AddTankScreen")}
         />
+        <CustomButton
+          title="Informações dos Tanques"
+          onPress={() => navigation.navigate("GraphAIScreen")}
+        />
       </>
     ) : (
       <>
