@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Aquasense</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Início</string>
+    <string name="nav_data">Dados</string>
+    <string name="nav_profile">Perfil</string>
+    
+    <!-- Auth Screens -->
+    <string name="login_title">Login</string>
+    <string name="register_title">Cadastro</string>
+    <string name="email_placeholder">Digite seu email</string>
+    <string name="password_placeholder">Digite sua senha</string>
+    <string name="name_placeholder">Digite seu nome</string>
+    <string name="age_placeholder">Digite sua idade</string>
+    <string name="country_placeholder">Digite seu país</string>
+    <string name="confirm_password_placeholder">Confirme sua senha</string>
+    <string name="login_button">Login</string>
+    <string name="register_button">Cadastrar</string>
+    <string name="quick_login">Quick Login</string>
+    <string name="logout">Logout</string>
+    
+    <!-- Home Screen -->
+    <string name="greeting">Olá, %1$s!</string>
+    <string name="greeting_default">Olá, Usuário!</string>
+    <string name="no_tanks_found">Nenhum tanque encontrado</string>
+    <string name="water">Água</string>
+    <string name="general_conditions">Condições Gerais</string>
+    <string name="temp">Temp</string>
+    <string name="ph">Ph</string>
+    <string name="tds">Tds</string>
+    <string name="volume">Volume</string>
+    
+    <!-- GraphAI Screen -->
+    <string name="lets_check_title_1">Vamos</string>
+    <string name="lets_check_title_2">Verificar?</string>
+    <string name="select_tank">Selecione tanque</string>
+    <string name="temperature">Temperatura</string>
+    <string name="excellent">Ótimo</string>
+    <string name="good">Bom</string>
+    <string name="attention">Atenção</string>
+    <string name="critical">Crítico</string>
+    
+    <!-- Tank Management -->
+    <string name="add_tank_title">Cadastrar Tanque</string>
+    <string name="update_tank_title">Atualizar Tanque</string>
+    <string name="delete_tank_title">Deletar Tanque</string>
+    <string name="select_tank_to_update">Selecione um Tanque</string>
+    <string name="select_tank_to_delete">Selecione o tanque que deseja deletar</string>
+    <string name="tank_name_label">Nome</string>
+    <string name="tank_name_placeholder">Nome (máx. 15 caracteres)</string>
+    <string name="tank_volume_label">Volume</string>
+    <string name="tank_volume_placeholder">Volume em Litros</string>
+    <string name="tank_number_label">Número</string>
+    <string name="tank_number_placeholder">Número do tanque</string>
+    <string name="register_button_tank">Cadastrar</string>
+    <string name="delete_button">Deletar</string>
+    <string name="confirm_deletion">Confirmar Exclusão</string>
+    <string name="delete_confirmation_message">Tem certeza que deseja deletar o tanque:</string>
+    <string name="action_cannot_be_undone">Esta ação não pode ser desfeita!</string>
+    <string name="tank_volume_display">Volume: %1$s L</string>
+    
+    <!-- Fish Management -->
+    <string name="add_fish_title">Cadastrar Peixe</string>
+    <string name="update_fish_title">Atualizar Peixe</string>
+    <string name="delete_fish_title">Deletar Peixe</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title">Perfil</string>
+    <string name="personal_information">Informações Pessoais</string>
+    <string name="edit_personal_data">Editar dados Pessoais</string>
+    <string name="change_password">Alterar a Senha</string>
+    <string name="logout_account">Sair da conta</string>
+    <string name="username_label">Nome de Usuário</string>
+    <string name="email_label">E-mail</string>
+    <string name="age_label">Idade</string>
+    <string name="country_label">País</string>
+    <string name="member_since">Membro desde</string>
+    <string name="current_password">Senha atual</string>
+    <string name="new_password">Nova senha</string>
+    <string name="confirm_new_password">Confirmar nova senha</string>
+    <string name="save_changes">Salvar Alterações</string>
+    <string name="cancel">Cancelar</string>
+    
+    <!-- Validation Messages -->
+    <string name="fish_id_required">ID do peixe é obrigatório</string>
+    <string name="fish_name_required">Nome do peixe é obrigatório</string>
+    <string name="fish_species_required">Espécie do peixe é obrigatória</string>
+    <string name="user_id_required">ID do usuário é obrigatório</string>
+    <string name="tank_name_required">Nome do tanque é obrigatório</string>
+    <string name="tank_volume_required">Volume do tanque é obrigatório</string>
+    <string name="tank_number_required">Número do tanque é obrigatório</string>
+    
+    <!-- Content Descriptions -->
+    <string name="cd_api_info">API Info</string>
+    <string name="cd_delete">Deletar</string>
+    <string name="cd_warning">Aviso</string>
+    <string name="cd_selected">Selecionado</string>
+    <string name="cd_download">Baixar</string>
+    <string name="cd_tank">Tanque</string>
+    <string name="cd_logout">Sair</string>
+    <string name="cd_navigate">Navegar</string>
+    <string name="cd_hide_password">Ocultar senha</string>
+    <string name="cd_show_password">Mostrar senha</string>
+    <string name="cd_save">Salvar</string>
+    <string name="cd_cancel">Cancelar</string>
+    <string name="cd_select_tank">Selecionar tanque</string>
+    <string name="cd_refresh_data">Atualizar dados</string>
+    <string name="cd_chart">Gráfico</string>
+    <string name="cd_generate_report">Gerar Relatório</string>
+    
+    <!-- Status and General Messages -->
+    <string name="logged_in">✅ Logado</string>
+    <string name="logged_out">❌ Deslogado</string>
+    <string name="no_aquarium_found">Nenhum aquário encontrado</string>
+    <string name="api_info_title">Informações da API</string>
+    <string name="api_url_label">URL da API:</string>
+    <string name="endpoints_label">Endpoints:</string>
+    <string name="timeout_label">Timeout:</string>
+    <string name="now_label">Agora</string>
+    
+    <!-- Test Screen Labels -->
+    <string name="test_center_title">🧪 API Test Center</string>
+    <string name="email_label_simple">Email</string>
+    <string name="password_label_simple">Senha</string>
+    <string name="name_label_simple">Nome</string>
+    <string name="load_tanks">Load Tanks</string>
+    <string name="create_tank">Create Tank</string>
+    <string name="tank_name_simple">Nome do Tank</string>
+    <string name="volume_liters">Volume (L)</string>
+    <string name="load_fish">Load Fish</string>
+    <string name="create_fish">Create Fish</string>
+    <string name="fish_name_simple">Nome do Peixe</string>
+    <string name="species_simple">Espécie</string>
+    <string name="get_data">Get Data</string>
+    <string name="get_history">Get History</string>
+    <string name="update_data">Update Data</string>
+    <string name="get_predictions">Get Predictions</string>
+    <string name="temp_celsius">Temp (°C)</string>
+    <string name="ph_simple">pH</string>
+    <string name="tds_ppm">TDS (ppm)</string>
+    
+    <!-- Default Test Values -->
+    <string name="tank_test_default">Tank Test</string>
+    <string name="fish_test_default">Fish Test</string>
+    <string name="goldfish_default">Goldfish</string>
+    
+    <!-- Error Message Placeholders -->
+    <string name="error_message">Erro: %1$s</string>
+    <string name="logs_count">📋 Logs (%1$d)</string>
+    
+    <!-- Toast Messages -->
+    <string name="registration_success">Cadastro realizado com sucesso!</string>
+    <string name="login_success">Login realizado com sucesso!</string>
+    <string name="logout_success">Logout realizado com sucesso!</string>
+    <string name="data_updated">Dados atualizados com sucesso!</string>
+    <string name="report_generated">Relatório gerado com sucesso!</string>
+    
+    <!-- Additional Labels -->
+    <string name="create_account">Criar Conta</string>
+    <string name="enter">Entrar</string>
+    
+    <!-- Validation Toast Messages -->
+    <string name="name_length_validation">O nome deve ter entre 1 e 15 caracteres</string>
+    <string name="age_validation">A idade deve ser um número maior ou igual a 0</string>
+    <string name="species_validation">A espécie não pode estar vazia</string>
+    <string name="weight_validation">O peso deve ser um número maior que 0</string>
+    <string name="quantity_validation">A quantidade deve ser um número maior ou igual a 1</string>
+    <string name="volume_validation">O volume deve ser um número maior que 0</string>
+    <string name="number_validation">O número deve ser um número maior que 0</string>
+    
+    <!-- Success Toast Messages -->
+    <string name="tank_created_success">Tanque criado com sucesso!</string>
+    <string name="tank_updated_success">Tanque atualizado com sucesso!</string>
+    <string name="tank_deleted_success">Tanque deletado com sucesso!</string>
+    <string name="fish_created_success">Peixe criado com sucesso!</string>
+    <string name="fish_updated_success">Peixe atualizado com sucesso!</string>
+    <string name="fish_deleted_success">Peixe deletado com sucesso!</string>
+    <string name="profile_updated_success">Perfil atualizado com sucesso!</string>
+    <string name="password_changed_success">Senha alterada com sucesso!</string>
+    <string name="session_ended">Sessão encerrada</string>
+    <string name="logout_success_simple">Logout realizado com sucesso</string>
+    
+    <!-- Error Messages -->
+    <string name="password_change_error">Erro ao alterar senha</string>
+    <string name="session_expired">Sessão expirada. Faça login novamente.</string>
+    <string name="select_tank_to_delete_error">Selecione um tanque para deletar</string>
+    <string name="select_fish_to_delete_error">Selecione um peixe para deletar</string>
+    
+    <!-- Dialog Messages -->>
+    <string name="delete_fish_confirmation">Tem certeza que deseja deletar o peixe:</string>
+    <string name="select_fish_to_delete">Selecione o peixe que deseja deletar</string>
+    
+    <!-- Update Screens -->
+    <string name="select_fish_to_update">Selecione um Peixe</string>
+    <string name="update_button">Atualizar</string>
+    
+    <!-- Password Change Dialog -->
+    <string name="change_password_title">Alterar Senha</string>
+    <string name="password_change_success_msg">Senha alterada com sucesso!</string>
+    <string name="password_change_error_msg">Erro ao alterar senha</string>
+    
+    <!-- Edit Profile Labels -->
+    <string name="statistics_title">Estatísticas</string>
+    <string name="tanks_count">Tanques</string>
+    <string name="fish_count">Peixes</string>
+    
+    <!-- Navigation Labels -->
+    <string name="data_screen_title">Dados</string>
+    <string name="add_tank_nav">Adicionar Tanque</string>
+    <string name="update_tank_nav">Atualizar Tanque</string>
+    <string name="delete_tank_nav">Deletar Tanque</string>
+    <string name="add_fish_nav">Adicionar Peixe</string>
+    <string name="update_fish_nav">Atualizar Peixe</string>
+    <string name="delete_fish_nav">Deletar Peixe</string>
+    <string name="graphs_nav">Gráficos</string>
+    <string name="reports_nav">Relatórios</string>
+    
+    <!-- Graph Screen -->
+    <string name="graph_title">Gráficos</string>
+    <string name="select_tank_for_graph">Selecione um tanque para ver os gráficos</string>
+    <string name="no_data_available">Nenhum dado disponível</string>
+    <string name="refresh_data">Atualizar Dados</string>
+    
+    <!-- Form Labels -->
+    <string name="required_field">Campo obrigatório</string>
+    <string name="invalid_format">Formato inválido</string>
+    <string name="select_tank_first">Selecione um tanque primeiro</string>
+    
+    <!-- Progress Indicators -->
+    <string name="loading">Carregando...</string>
+    <string name="processing">Processando...</string>
+    <string name="updating">Atualizando...</string>
+    
+    <!-- AI Classifications -->
+    <string name="normal_conditions">Condições Normais</string>
+    <string name="attention_needed">Atenção Necessária</string>
+    <string name="critical_situation">Situação Crítica</string>
+
+    <!-- DataScreen Navigation -->
+    <string name="tank_option">Tanque</string>
+    <string name="fish_option">Peixe</string>
+    <string name="graphs_title">Gráficos</string>
+    <string name="tank_info_title">Informações dos Tanques</string>
+
+    <!-- Tank Management Screens -->
+    <string name="select_tank_title">Selecione um Tanque</string>
+    <string name="no_tanks_registered">Nenhum tanque cadastrado</string>
+    <string name="update_tank_form_title">Atualizar Tanque</string>
+    <string name="delete_tank_form_title">Deletar Tanque</string>
+    <string name="tank_name_placeholder_long">Nome (máx. 15 caracteres)</string>
+    <string name="tank_volume_placeholder_long">Volume em Litros</string>
+    <string name="tank_number_placeholder_long">Número do tanque</string>
+    <string name="save_changes_button">Salvar Alterações</string>
+    <string name="delete_tank_confirmation">Tem certeza que deseja deletar o tanque:</string>
+    <string name="warning_deletion">Esta ação não pode ser desfeita. Todos os dados relacionados a este tanque serão perdidos.</string>
+
+    <!-- Fish Management Screens -->
+    <string name="add_fish_form_title">Cadastrar Peixe</string>
+    <string name="update_fish_form_title">Atualizar Peixe</string>
+    <string name="delete_fish_form_title">Deletar Peixe</string>
+    <string name="select_fish_title">Selecione um Peixe</string>
+    <string name="no_fish_registered">Nenhum peixe cadastrado</string>
+    <string name="fish_name_label">Nome</string>
+    <string name="fish_age_label">Idade</string>
+    <string name="fish_species_label">Espécie</string>
+    <string name="fish_weight_label">Peso</string>
+    <string name="fish_quantity_label">Quantidade</string>
+    <string name="fish_name_placeholder">Nome (máx. 15 caracteres)</string>
+    <string name="fish_age_placeholder">Idade em meses</string>
+    <string name="fish_species_placeholder">Espécie do peixe</string>
+    <string name="fish_weight_placeholder">Peso em gramas</string>
+    <string name="fish_quantity_placeholder">Quantidade de peixes</string>
+    <string name="register_button_fish">Cadastrar</string>
+    <string name="delete_fish_confirmation_msg">Tem certeza que deseja deletar o peixe:</string>
+    <string name="warning_fish_deletion">Esta ação não pode ser desfeita. Todos os dados relacionados a este peixe serão perdidos.</string>
+    <string name="fishes_count">Peixes</string>
+
+    <!-- AI Classification Messages -->
+    <string name="ai_normal">Condições Normais - Seu aquário está em ótimas condições!</string>
+    <string name="ai_alert">Atenção Necessária - Alguns parâmetros precisam de ajuste</string>
+    <string name="ai_critical">Situação Crítica - Ação imediata necessária!</string>
+    <string name="ai_loading">Carregando...</string>
+    <string name="ai_normal_no_ia">Normal (sem IA)</string>
+    <string name="ai_alert_no_ia">Alerta (sem IA)</string>
+    <string name="ai_crisis_no_ia">Crise (sem IA)</string>
+    <string name="ai_unavailable">IA indisponível, usando análise simplificada</string>
+    <string name="temperature_low">Temperatura baixa (%1$.1f°C). Ideal: %2$.1f-%3$.1f°C</string>
+    <string name="temperature_high">Temperatura alta (%1$.1f°C). Ideal: %2$.1f-%3$.1f°C</string>
+    <string name="ph_low">pH baixo (%1$.1f). Ideal: %2$.1f-%3$.1f</string>
+    <string name="ph_high">pH alto (%1$.1f). Ideal: %2$.1f-%3$.1f</string>
+    <string name="tds_low">TDS baixo (%1$.0f ppm). Ideal: %2$.0f-%3$.0f ppm</string>
+    <string name="tds_high">TDS alto (%1$.0f ppm). Ideal: %2$.0f-%3$.0f ppm</string>
+    <string name="volume_critical">Volume crítico (%1$d%%)</string>
+    <string name="volume_alert">Volume em alerta (%1$d%%)</string>
+    <string name="volume_crisis_state">CRISE</string>
+    <string name="volume_alert_state">ALERTA</string>
+    <string name="volume_in_state">Volume em %1$s</string>
+
+    <!-- HomeScreen Status Messages -->
+    <string name="home_loading">Carregando...</string>
+    <string name="home_all_good">Tudo certo por aqui!</string>
+    <string name="home_attention">Atenção: %1$s</string>
+    <string name="home_temperature_low">Temperatura baixa</string>
+    <string name="home_temperature_high">Temperatura alta</string>
+    <string name="home_ph_low">pH baixo</string>
+    <string name="home_ph_high">pH alto</string>
+    <string name="home_tds_low">TDS baixo</string>
+    <string name="home_tds_high">TDS alto</string>
+
+    <!-- GraphAI Good Parameters Consideration -->
+    <string name="good_params_consideration">Alguns parâmetros estão em Good, monitore para manter Excellent</string>
+
+    <!-- ProfileImagePicker -->
+    <string name="choose_profile_photo">Escolher foto de perfil</string>
+    <string name="gallery_option">Galeria</string>
+    <string name="camera_option">Câmera</string>
+    <string name="remove_photo_option">Remover foto</string>
+    
+    <!-- Graph Screen -->
+    <string name="sensor_graphs_title">Gráficos dos Sensores</string>
+    <string name="no_tank_registered">Nenhum tanque cadastrado</string>
+    <string name="register_tank_to_see_graphs">Cadastre um tanque para ver os gráficos</string>
+    <string name="tank_label">Tanque</string>
+    <string name="temperature_subtitle">Temperatura da água em graus Celsius</string>
+    <string name="ph_subtitle">Nível de acidez da água (pH 0-14)</string>
+    <string name="tds_subtitle">Sólidos dissolvidos totais em ppm</string>
+    <string name="volume_subtitle">Volume de água em litros</string>
+    <string name="generate_report">Gerar Relatório</string>
+    <string name="chart_label">Gráfico</string>
+    <string name="select_up_to_3_tanks">Selecione até 3 tanques</string>
+    <string name="choose_tanks_to_compare">Escolha os tanques que deseja comparar nos gráficos</string>
+    <string name="select_tanks">Selecionar Tanques</string>
+    <string name="tanks_selected">%1$d/3 tanques selecionados</string>
+    <string name="close">Fechar</string>
+    <string name="select">Selecionar</string>
+    <string name="remove_tank">Remover tanque</string>
+    <string name="insufficient_data">Dados insuficientes\nMínimo 2 pontos necessários</string>
+    <string name="no_data_to_display">Sem dados para exibir</string>
+    <string name="wait_for_more_data">Aguarde mais dados serem coletados para visualizar o gráfico.</string>
+    <string name="data_will_display_automatically">Os últimos registros serão exibidos automaticamente quando disponíveis.</string>
+    
+    <!-- Report Screen -->
+    <string name="sensor_reports_title">Relatórios de Sensores</string>
+    <string name="sensor_reports_description">Exporte dados históricos dos seus sensores em formato CSV</string>
+    <string name="sensor_selected">Sensor Selecionado: %1$s</string>
+    <string name="thermal_data">Dados térmicos</string>
+    <string name="water_acidity">Acidez da água</string>
+    <string name="dissolved_solids">Sólidos dissolvidos</string>
+    <string name="water_level">Nível de água</string>
+    <string name="select_tank_report">Select Tank</string>
+    <string name="report_information">Report Information</string>
+    <string name="period">Período</string>
+    <string name="all_historical_data">Todos os dados históricos disponíveis</string>
+    <string name="format">Formato</string>
+    <string name="csv_file_analysis">Arquivo CSV para análise</string>
+    <string name="included_data">Dados inclusos</string>
+    <string name="values_timestamps_stats">Valores, timestamps e estatísticas</string>
+    <string name="generating_report">Gerando relatório...</string>
+    <string name="generate_download_report">Gerar e Baixar Relatório</string>
+    <string name="download">Baixar</string>
+    <string name="capacity">Capacidade: %1$sL</string>
+</resources>

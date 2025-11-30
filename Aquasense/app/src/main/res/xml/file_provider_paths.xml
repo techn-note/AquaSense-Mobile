@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Pasta interna para arquivos temporários da câmera -->
+    <cache-path name="camera_temp" path="." />
+    <!-- Pasta interna para arquivos de perfil -->
+    <files-path name="profile_images" path="profile_images/" />
+    <!-- Pasta externa para relatórios CSV -->
+    <external-files-path name="reports" path="reports/" />
+    <!-- Cache para relatórios temporários -->
+    <cache-path name="reports_temp" path="reports" />
+    <!-- Cache root -->
+    <cache-path name="cache_root" path="." />
+</paths>
